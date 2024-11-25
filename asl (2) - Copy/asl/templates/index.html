@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .video-container {
+            margin: 20px auto;
+            max-width: 800px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #video-feed {
+            width: 100%;
+            height: auto;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .start {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .stop {
+            background-color: #f44336;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>ASL Detection System</h1>
+    <div class="video-container">
+        <img id="video-feed" src="" alt="Video feed will appear here">
+    </div>
+    <div class="controls">
+        <button class="start" onclick="startDetection()">Start Detection</button>
+        <button class="stop" onclick="stopDetection()">Stop Detection</button>
+    </div>
+    <script>
+        async function startDetection() {
+            try {
+                const response = await fetch('/start_detection');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    document.getElementById('video-feed').src = '/video_feed';
+                    alert('Detection started');
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Failed to start detection');
+            }
+        }
+
+        async function stopDetection() {
+            try {
+                const response = await fetch('/stop_detection');
+                const data = await response.json();
+                if (data.status === 'success') {
+                    document.getElementById('video-feed').src = '';
+                    alert('Detection stopped');
+                } else {
+                    alert('Error stopping detection');
+                }
+            } catch (error) {
+                alert('Failed to stop detection');
+            }
+        }
+    </script>
+</body>
+</html>
